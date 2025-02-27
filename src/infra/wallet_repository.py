@@ -28,7 +28,7 @@ class AbstractRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_by_id_without_trans(self, wallet_id: UUID) -> Wallet | None:
+    async def get_by_id_without_transaction(self, wallet_id: UUID) -> Wallet | None:
         raise NotImplementedError
 
 

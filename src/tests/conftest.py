@@ -31,7 +31,7 @@ class TestRepository(AbstractRepository):
         self.wallets[wallet.id] = wallet
         return wallet
 
-    async def get_by_id_without_trans(self, wallet_id: UUID) -> Wallet | None:
+    async def get_by_id_without_transaction(self, wallet_id: UUID) -> Wallet | None:
         return self.wallets.get(wallet_id)
 
 
