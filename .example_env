@@ -1,0 +1,11 @@
+POSTGRES_DB=wallet_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=qwerty
+
+APP_PG_URL=postgresql+asyncpg://postgres:qwerty@wallet_db:5432/wallet_db
+
+LIQUIBASE_COMMAND_URL=jdbc:postgresql://wallet_db:5432/wallet_db
+LIQUIBASE_COMMAND_USERNAME=postgres
+LIQUIBASE_COMMAND_PASSWORD=qwerty
+LIQUIBASE_COMMAND_CHANGELOG_FILE=changelog.sql
+LIQUIBASE_SEARCH_PATH=/liquibase/changelog
