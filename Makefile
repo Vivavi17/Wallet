@@ -4,7 +4,7 @@ start: env_file
 
 env_file:
 ifeq (,$(wildcard .env))
-	@echo "Creating .env file from .env-example..."
+	@echo "Creating .env file from .example-env..."
 	cp .example-env .env
 endif
 
