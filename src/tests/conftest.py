@@ -1,6 +1,7 @@
 import random
 from contextlib import asynccontextmanager
 from decimal import Decimal
+from typing import Type
 from uuid import UUID, uuid4
 
 import pytest
@@ -16,23 +17,31 @@ from service.service import AbstractService, WalletService
 class TestRepository(AbstractRepository):
     wallets = {}
 
-    @asynccontextmanager
-    async def transaction(self):
-        yield
+    def __init__(self): ...
 
-    async def get_by_id(self, session, wallet_id: UUID) -> Wallet:
+    async def get_by_id(self, wallet_id: UUID) -> Wallet:
         return self.wallets.get(wallet_id)
 
-    async def save(self, session, wallet: Wallet):
+    async def save(self, wallet: Wallet):
         self.wallets[wallet.id] = wallet
 
-    async def create(self):
-        wallet = Wallet()
+    async def create(self, wallet):
         self.wallets[wallet.id] = wallet
         return wallet
 
     async def get_by_id_without_transaction(self, wallet_id: UUID) -> Wallet | None:
         return self.wallets.get(wallet_id)
+
+
+class TestUOWFactory:
+    @asynccontextmanager
+    async def __call__(self):
+        yield TestUOW()
+
+
+class TestUOW:
+    def get(self, repository: Type[AbstractRepository]):
+        return repository
 
 
 @pytest.fixture()
@@ -60,7 +69,7 @@ def wallets_id(t_repository) -> list[UUID]:
 
 @pytest.fixture(scope="module")
 def t_service(t_repository) -> AbstractService:
-    return WalletService(t_repository)
+    return WalletService(t_repository, TestUOWFactory())
 
 
 @pytest.fixture()
